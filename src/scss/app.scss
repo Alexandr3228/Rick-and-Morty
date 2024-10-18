@@ -1,0 +1,147 @@
+@import "./libs/normalize.scss";
+@import "./vars.scss";
+
+// @import "./components/all";
+
+body {
+  background-color: var($white); // $white;
+  color: var($black); //$black
+}
+
+.container {
+  max-width: $container-width;
+  margin: 0 auto;
+}
+
+header {
+  height: 60px;
+  font-family: $font-secondary;
+  box-shadow: 0px 1px 7px rgba(0, 0, 0, 0.15);
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    height: 100%;
+  }
+
+  .logo {
+    width: 50px;
+    height: 50px;
+  }
+
+  .nav {
+    display: flex;
+    gap: 25px;
+
+    &__link {
+      font-family: $font-primary;
+      font-size: 18px;
+      font-weight: 800;
+      line-height: auto;
+      // text-decoration: none;
+      color: var($black);
+    }
+  }
+}
+
+.main {
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__img {
+    margin: 26px 0 16px 0;
+  }
+
+  .filter__bar {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .characters {
+    width: 100%;
+    margin-top: 60px;
+
+    &__list {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: auto;
+      gap: 24px 20px;
+    }
+
+    &__item {
+      width: 240px;
+      height: auto;
+
+      border-radius: 4px;
+      box-shadow: 0px 5px 8px -1px rgba(0, 0, 0, 0.3);
+    }
+
+    &__img {
+      width: 240px;
+      height: 168px;
+      margin-bottom: -6px;
+    }
+
+    &__info {
+      padding: 13px 14px 13px 14px;
+      font-family: $font-primary;
+      line-height: 1.5;
+    }
+
+    &__title {
+      font-size: 20px;
+      font-weight: 500;
+      color: hsla(0, 0%, 0%, 0.87);
+      letter-spacing: 0.15px;
+    }
+
+    &__subtitle {
+      font-size: 14px;
+      font-weight: 400;
+      color: hsla(0, 0%, 0%, 0.6);
+      letter-spacing: 0.25px;
+    }
+  }
+
+  .btn__load {
+    padding: 10px 30px;
+    margin: 65px 0 55px 0;
+    border-radius: 4px;
+    background-color: rgba(33, 149, 243, 0.05);
+    box-shadow: 0px 1px 7px rgba(0, 0, 0, 0.2);
+
+    & p {
+      font-family: $font-primary;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: 1.25;
+      color: #2196f3;
+    }
+  }
+}
+
+.footer {
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: $font-secondary;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #212121;
+  box-shadow: 0px -2px 7px rgba(0, 0, 0, 0.15);
+}
