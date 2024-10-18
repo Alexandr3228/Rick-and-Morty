@@ -2,13 +2,16 @@ import React from "react";
 
 import styles from "./FilterBar.module.scss";
 
-function FilterBar() {
+function FilterBar({ species, setSpecies, setPopupIsActive, popupIsActive }) {
   return (
     <div className={styles.root}>
       <div className={styles.filterBarItem}>
         <div className={styles.filterBarLabel}>
           <span className={styles.filterBarSelector}>Species</span>
-          <button className={styles.filterBarSelectorButton}>
+          <button
+            onClick={() => setPopupIsActive(!popupIsActive)}
+            className={styles.filterBarSelectorButton}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="10"
@@ -20,14 +23,26 @@ function FilterBar() {
             </svg>
           </button>
         </div>
-        <div className={styles.filterBarPopup}>
-          <div className={styles.filterBarPopupItem}>Human</div>
-          <div className={styles.filterBarPopupItem}>Alien</div>
-          <div className={styles.filterBarPopupItem}>Humanoid</div>
-          <div className={styles.filterBarPopupItem}>Poopybutthole</div>
-          <div className={styles.filterBarPopupItem}>Mythological</div>
-          <div className={styles.filterBarPopupItem}>Unknown</div>
-        </div>
+        <ul
+          style={{ display: popupIsActive ? "block" : "none" }}
+          className={styles.filterBarPopup}
+        >
+          {/* {species.map((specie) => ( */}
+          <li
+            // key={specie}
+            className={styles.filterBarPopupItem}
+            // onClick={() => setSpecies(specie)}
+          >
+            {/* {specie} */}
+          </li>
+          {/* ))} */}
+          {/* <li className={styles.filterBarPopupItem}>Human</li>
+          <li className={styles.filterBarPopupItem}>Alien</li>
+          <li className={styles.filterBarPopupItem}>Humanoid</li>
+          <li className={styles.filterBarPopupItem}>Poopybutthole</li>
+          <li className={styles.filterBarPopupItem}>Mythological</li>
+          <li className={styles.filterBarPopupItem}>Unknown</li> */}
+        </ul>
       </div>
       <div className={styles.filterBarItem}>
         <div className={styles.filterBarLabel}>
