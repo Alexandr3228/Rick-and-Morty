@@ -27,21 +27,15 @@ function FilterBar({ species, setSpecies, setPopupIsActive, popupIsActive }) {
           style={{ display: popupIsActive ? "block" : "none" }}
           className={styles.filterBarPopup}
         >
-          {/* {species.map((specie) => ( */}
+          {/* {species.map((spec) => ( */}
           <li
-            // key={specie}
+            // key={spec.id}
             className={styles.filterBarPopupItem}
-            // onClick={() => setSpecies(specie)}
+            // onClick={() => setSpecies(spec)}
           >
-            {/* {specie} */}
+            {/* {spec} */}
           </li>
           {/* ))} */}
-          {/* <li className={styles.filterBarPopupItem}>Human</li>
-          <li className={styles.filterBarPopupItem}>Alien</li>
-          <li className={styles.filterBarPopupItem}>Humanoid</li>
-          <li className={styles.filterBarPopupItem}>Poopybutthole</li>
-          <li className={styles.filterBarPopupItem}>Mythological</li>
-          <li className={styles.filterBarPopupItem}>Unknown</li> */}
         </ul>
       </div>
       <div className={styles.filterBarItem}>

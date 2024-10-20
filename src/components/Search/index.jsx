@@ -20,6 +20,7 @@ function Search({ searchValue, setSearchValue }) {
         />
       </svg>
       <input
+        key={searchValue}
         value={searchValue}
         onChange={(event) => setSearchValue(event.target.value)}
         className={styles.searchInput}

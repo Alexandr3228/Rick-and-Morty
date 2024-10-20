@@ -21,7 +21,7 @@ function Locations() {
       }
     };
     getLocations();
-  }, []);
+  }, [locationData]);
 
   console.log(locationData);
   return (
@@ -37,9 +37,9 @@ function Locations() {
           <FilterBar />
         </div>
 
-        <button className="btn__load">
+        {/* <button className="btn__load">
           <p>Load more</p>
-        </button>
+        </button> */}
       </div>
     </section>
   );
