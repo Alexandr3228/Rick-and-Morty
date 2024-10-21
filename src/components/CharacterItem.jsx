@@ -1,12 +1,22 @@
 import React from "react";
 
-function CharacterItem({ id, image, name, species }) {
+function CharacterItem({
+  ...character
+  // , image, name, species
+}) {
   return (
-    <li key={id} className="characters__item">
-      <img className="characters__img" src={image} alt="Character img" />
+    <li key={character.id} className="characters__item">
+      <img
+        className="characters__img"
+        src={character.image}
+        alt="Character img"
+      />
       <div className="characters__info">
-        <p className="characters__title">{name}</p>
-        <p className="characters__subtitle">{species}</p>
+        <p className="characters__title">{character.name}</p>
+        <p className="characters__subtitle">
+          {character.species}
+          {character.id}
+        </p>
       </div>
     </li>
   );

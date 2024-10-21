@@ -5,60 +5,18 @@ import axios from "axios";
 import Search from "../components/Search";
 import FilterBar from "../components/FilterBar";
 import CharacterItem from "../components/CharacterItem";
-// import { useEffect, useState } from "react";
 
 function Home() {
   const [popupIsActive, setPopupIsActive] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState(""); //Для поиска персонажей
-  // const [characters, setCharacters] = React.useState([]); //Для вывода персонажей
+  const [characters, setCharacters] = React.useState([]); //Для вывода персонажей
   // // const [species, setSpecies] = React.useState([]); //Для вывода спецификации в фильтр
-  // const [isLoading, setIsLoading] = React.useState(false); //Для загрузки страницы
-  const search = searchValue ? `?name=${searchValue}` : ""; //Сокращение для "url"
-  // const [nextPageLoad, setNextPageLoad] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false); //Для загрузки страницы
+  const search = searchValue ? `?name=${searchValue.value}` : ""; //Сокращение для "url"
   // // const url = `https://rickandmortyapi.com/api/character`; //"url" //${search}//
-  // const [url, setUrl] = React.useState(
-  //   "https://rickandmortyapi.com/api/character"
-  // ); //Для загрузки следующей страницы персонажей
-
-  // React.useEffect(() => {
-  //   const getData = async () => {
-  //     setIsLoading(true);
-  //     try {
-  //       const response = await axios.get(url);
-  //       setCharacters(response.data.results);
-  //       setSpecies(response.data.results.map((character) => character.species));
-  //       setIsLoading(false);
-  //     } catch (error) {
-  //       console.log("error character");
-  //     }
-  //   };
-  //   getData();
-  // }, [searchValue, url]);
-
-  // React.useEffect(() => {
-  //   const getData = async () => {
-  //     if (!url) return;
-  //     try {
-  //       setIsLoading(true);
-  //       const response = await axios.get(url);
-  //       // if (url && isLoading === true) {
-  //       setCharacters((prev) => [...prev, ...response.data.results]);
-  //       setUrl(response.data.info.next);
-  //       setIsLoading(false);
-  //       // }
-  //       // setUrl(response.data.info.next);
-  //     } catch (error) {
-  //       console.log("error character");
-  //     }
-  //   };
-  //   getData();
-  // }, [url, characters, isLoading]);
-
-  const [characters, setCharacters] = React.useState([]); // Храним всех загруженных персонажей
   const [url, setUrl] = React.useState(
-    `https://rickandmortyapi.com/api/character/${search}`
-  ); // Начальный URL для первой страницы
-  const [isLoading, setIsLoading] = React.useState(false); // Флаг загрузки
+    `https://rickandmortyapi.com/api/character/${search}` //?name=rick
+  ); //Для загрузки следующей страницы персонажей
   const [nextUrl, setNextUrl] = React.useState(null); // URL для следующей страницы
 
   React.useEffect(() => {
@@ -72,6 +30,7 @@ function Home() {
           ...prevCharacters,
           ...response.data.results, // Добавляем новых персонажей к уже загруженным
         ]);
+        // console.log(response.data.results.id);
         setNextUrl(response.data.info.next); // Устанавливаем URL следующей страницы
       } catch (error) {
         console.error("Error fetching characters:", error);
@@ -110,7 +69,7 @@ function Home() {
         <section className="characters">
           <ul className="characters__list">
             {characters.map((character) => (
-              <CharacterItem key={character} {...character} />
+              <CharacterItem key={character.id} {...character} />
             ))}
           </ul>
         </section>
