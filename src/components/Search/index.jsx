@@ -2,7 +2,14 @@ import React from "react";
 
 import styles from "./Search.module.scss";
 
-function Search({ searchValue, setSearchValue }) {
+function Search({ setSearchValue }) {
+  const [search, setSearch] = React.useState("");
+
+  const onChangeSearchValue = (event) => {
+    setSearch(event.target.value);
+    setSearchValue(event.target.value);
+  };
+
   return (
     <div className={styles.search}>
       <svg
@@ -20,9 +27,8 @@ function Search({ searchValue, setSearchValue }) {
         />
       </svg>
       <input
-        // key={id}
-        value={searchValue}
-        onChange={(event) => setSearchValue(event.target.value)}
+        value={search}
+        onChange={onChangeSearchValue}
         className={styles.searchInput}
         placeholder="Filter by name..."
       />

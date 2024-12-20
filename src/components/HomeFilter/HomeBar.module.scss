@@ -1,0 +1,55 @@
+@import "../../scss/vars";
+
+.root {
+  display: flex;
+  gap: 20px;
+
+  font-size: 16px;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.filterBarItem {
+  position: relative;
+}
+
+.filterBarLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 240px;
+  height: 56px;
+  padding: 16px 16px 16px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.45);
+  border-radius: 8px;
+}
+
+.filterBarSelector {
+  font-size: 16px;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.filterBarPopup {
+  position: absolute;
+  display: none;
+  gap: 7px;
+  top: 55px;
+  left: auto;
+  width: 240px;
+  padding: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.45);
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+  &:active {
+    display: grid;
+  }
+}
+
+.filterBarPopupItem {
+  font-size: 16px;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.5);
+}

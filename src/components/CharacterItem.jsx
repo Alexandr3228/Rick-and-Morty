@@ -1,22 +1,18 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-function CharacterItem({
-  ...character
-  // , image, name, species
-}) {
+function CharacterItem({ id, image, name, species }) {
   return (
-    <li key={character.id} className="characters__item">
-      <img
-        className="characters__img"
-        src={character.image}
-        alt="Character img"
-      />
+    <li key={id} className="characters__item">
+      <Link key={id} to={`/character/${id}`}>
+        <img className="characters__img" src={image} alt="Character img" />
+      </Link>
       <div className="characters__info">
-        <p className="characters__title">{character.name}</p>
-        <p className="characters__subtitle">
-          {character.species}
-          {character.id}
+        <p className="characters__title">
+          {/* <span className="characters__status"></span> */}
+          {name}
         </p>
+        <p className="characters__subtitle">{species}</p>
       </div>
     </li>
   );

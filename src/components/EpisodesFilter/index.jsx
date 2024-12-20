@@ -1,8 +1,8 @@
 import React from "react";
 
-import styles from "./FilterBar.module.scss";
+import styles from "./HomeBar.module.scss";
 
-function FilterBar({ species, setSpecies, setPopupIsActive, popupIsActive }) {
+function EpisodesFilter() {
   return (
     <div className={styles.root}>
       <div className={styles.filterBarItem}>
@@ -85,4 +85,4 @@ function FilterBar({ species, setSpecies, setPopupIsActive, popupIsActive }) {
   );
 }
 
-export default FilterBar;
+export default EpisodesFilter;

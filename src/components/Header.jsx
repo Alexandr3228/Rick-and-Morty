@@ -17,7 +17,7 @@ function Header() {
           <Link className="nav__link" to="/locations">
             Locations
           </Link>
-          <Link className="nav__link" href="/episodes">
+          <Link className="nav__link" to="/episodes">
             Episodes
           </Link>
         </nav>

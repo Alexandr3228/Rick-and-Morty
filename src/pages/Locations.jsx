@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 
 import Search from "../components/Search";
-import FilterBar from "../components/FilterBar";
+import FilterBar from "../components/HomeFilter";
 
 function Locations() {
   const url = `https://rickandmortyapi.com/api/location`;
@@ -37,9 +37,9 @@ function Locations() {
           <FilterBar />
         </div>
 
-        {/* <button className="btn__load">
+        <button className="btn__load">
           <p>Load more</p>
-        </button> */}
+        </button>
       </div>
     </section>
   );
