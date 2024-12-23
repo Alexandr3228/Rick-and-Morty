@@ -1,42 +1,47 @@
 import React from "react";
 import axios from "axios";
 
+import LocationItem from "../components/LocationItem";
 import Search from "../components/Search";
-import FilterBar from "../components/HomeFilter";
+import { useParams } from "react-router-dom";
+// import FilterBar from "../components/HomeFilter";
 
 function Locations() {
+  const { id } = useParams();
   const url = `https://rickandmortyapi.com/api/location`;
 
-  const [locationData, setLocationData] = React.useState([]);
+  const [locationsData, setLocationsData] = React.useState([]);
 
   React.useEffect(() => {
-    const getLocations = async () => {
+    const getEpisodes = async () => {
       try {
         const response = await axios.get(url);
-        const data = response;
-
-        console.log(data);
+        setLocationsData(response.data.results);
       } catch (error) {
         console.log(error);
       }
     };
-    getLocations();
-  }, [locationData]);
+    getEpisodes();
+  }, [url]);
 
-  console.log(locationData);
+  // console.log(locationsData);
+
   return (
-    <section className="main">
+    <section className="locations">
       <div className="container">
         <img
-          className="main__img"
+          className="locations--img"
           src="./img/locations.png"
           alt="Rick and Morty"
         />
-        <div className="filter__bar">
+        <div className="locations--search">
           <Search />
-          <FilterBar />
         </div>
-
+        <ul className="locations--list">
+          {locationsData.map((location) => (
+            <LocationItem key={location.id} {...location} />
+          ))}
+        </ul>
         <button className="btn__load">
           <p>Load more</p>
         </button>

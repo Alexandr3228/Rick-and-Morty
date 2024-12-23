@@ -22,7 +22,7 @@ function Episodes() {
     getEpisodes();
   }, [url]);
 
-  console.log(episodesData);
+  // console.log(episodesData);
 
   return (
     <section className="episodes">

@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
+import EpisodePage from "./EpisodePage";
 
 function CharacterPage() {
   const [character, setCharacter] = React.useState([]);
@@ -17,6 +18,7 @@ function CharacterPage() {
       try {
         const response = await axios.get(characterUrl);
         setCharacter(response.data);
+
         setEpisodeUrls(response.data.episode);
       } catch (error) {
         console.log(error);
@@ -98,12 +100,13 @@ function CharacterPage() {
             <h3 className="characterPage--info--title">Episodes</h3>
             <ul className="characterPage--info--list">
               {episodeData.map((episode) => (
-                <li key={episode.id} className="characterPage--info--item">
-                  <h4>{episode.episode}</h4>
-                  <p>{episode.name}</p>
-                  <span>{episode.air_date}</span>
-                  <p>{episode.id}</p>
-                </li>
+                <Link to={`/episode/` + episode.id} key={episode.id}>
+                  <li key={episode.id} className="characterPage--info--item">
+                    <h4>{episode.episode}</h4>
+                    <p>{episode.name}</p>
+                    <span>{episode.air_date}</span>
+                  </li>
+                </Link>
               ))}
             </ul>
           </div>

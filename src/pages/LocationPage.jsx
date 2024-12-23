@@ -3,28 +3,27 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import CharacterItem from "../components/CharacterItem";
 
-function EpisodePage() {
-  const [episode, setEpisode] = React.useState([]);
+function LocationPage({}) {
+  const [location, setLocation] = React.useState([]);
   const [characterData, setCharacterData] = React.useState([]);
   const [characterUrls, setCharacterUrls] = React.useState([]);
   const { id } = useParams();
-  const episodeUrl = `https://rickandmortyapi.com/api/episode/` + id;
+  const locationUrl = `https://rickandmortyapi.com/api/location/` + id;
 
   React.useEffect(() => {
     //Fetch character
-    const getCharacter = async () => {
+    const getLocation = async () => {
       try {
-        const response = await axios.get(episodeUrl);
-        setEpisode(response.data);
-        // const test = response.data.characters;
-        setCharacterUrls(response.data.characters);
-        // console.log(test, "test");
+        const response = await axios.get(locationUrl);
+        setLocation(response.data);
+        setCharacterUrls(response.data.residents);
+        // console.log(response.data);
       } catch (error) {
         console.log(error);
       }
     };
-    getCharacter();
-  }, [episodeUrl]);
+    getLocation();
+  }, [locationUrl]);
 
   React.useEffect(() => {
     if (characterUrls.length > 0) {
@@ -42,13 +41,11 @@ function EpisodePage() {
     }
   }, [characterUrls]);
 
-  // console.log(characterData, "char");
-
   return (
-    <section className="episodePage">
+    <section className="locationPage">
       <div className="container">
-        <Link to={"/episodes"} className="btn__back-link">
-          <button className="episodePage--btn btn__back">
+        <Link to={"/locations"} className="btn__back-link">
+          <button className="locationPage--btn btn__back">
             <svg
               width="16"
               height="16"
@@ -64,22 +61,22 @@ function EpisodePage() {
             <p>Go back</p>
           </button>
         </Link>
-        <div className="episodePage--info">
-          <h2>{episode.name}</h2>
-          <div className="episodePage--subInfo">
-            <div className="episodePage--subInfo--item">
-              <p>Episode</p>
-              <span>{episode.episode}</span>
+        <div className="locationPage--info">
+          <h2>{location.name}</h2>
+          <div className="locationPage--subInfo">
+            <div className="locationPage--subInfo--item">
+              <p>Type</p>
+              <span>{location.type}</span>
             </div>
-            <div className="episodePage--subInfo--item">
-              <p>Date</p>
-              <span>{episode.air_date}</span>
+            <div className="locationPage--subInfo--item">
+              <p>Dimension</p>
+              <span>{location.dimension}</span>
             </div>
           </div>
         </div>
-        <div className="episodePage--cast">
-          <h3 className="episodePage--cast--title">Cast</h3>
-          <ul className="episodePage--cast--list">
+        <div className="locationPage--residents">
+          <h3>Residents</h3>
+          <ul className="locationPage--residents--list">
             {characterData.map((character) => (
               <CharacterItem key={character.id} {...character} />
             ))}
@@ -90,4 +87,4 @@ function EpisodePage() {
   );
 }
 
-export default EpisodePage;
+export default LocationPage;
