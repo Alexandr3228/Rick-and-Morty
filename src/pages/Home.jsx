@@ -7,20 +7,46 @@ import HomeFilter from "../components/HomeFilter";
 import CharacterItem from "../components/CharacterItem";
 import Pagination from "../components/Pagination";
 
+import { setCharacter } from "../redux/slices/characterSlice";
+import { fetchHomeFilter } from "../utils/fetchHomeFilter";
+
 function Home() {
   const [popupIsActive, setPopupIsActive] = React.useState(false);
-  const [searchValue, setSearchValue] = React.useState(""); //Search for url
+  //Search for url
   const [characters, setCharacters] = React.useState([]); //Characters
-  const [pageCount, setPageCount] = React.useState("");
-  const [currentPage, setCurrentPage] = React.useState("");
-  // // const [species, setSpecies] = React.useState([]); //Specie state
+  // const [pageCount, setPageCount] = React.useState("");
+  // const [currentPage, setCurrentPage] = React.useState("");
+  const [filterData, setFilterData] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false); //Check loading page
-  const search = searchValue ? `?name=${searchValue}` : "";
-  // // const url = `https://rickandmortyapi.com/api/character`;
-  const [url, setUrl] = React.useState(
-    `https://rickandmortyapi.com/api/character/${search}` // URL ""?name=rick""        _______//filter_fix//________
-  );
+  // const search = searchValue ? `?name=${searchValue}` : "";
+  const [searchValue, setSearchValue] = React.useState("");
+  const [speciesFilter, setSpeciesFilter] = React.useState("");
+  const [genderFilter, setGenderFilter] = React.useState("");
+  const [statusFilter, setStatusFilter] = React.useState("");
+  const [url, setUrl] = React.useState("");
   const [nextUrl, setNextUrl] = React.useState(null); // URL next page
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      const searchParams = new URLSearchParams();
+      if (searchValue) searchParams.append("name", searchValue);
+      if (speciesFilter) searchParams.append("species", speciesFilter);
+      if (genderFilter) searchParams.append("gender", genderFilter);
+      if (statusFilter) searchParams.append("status", statusFilter);
+
+      const searchQuery = searchParams.toString();
+      setUrl(`https://rickandmortyapi.com/api/character?${searchQuery}`);
+    }, 400);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchValue, speciesFilter, genderFilter, statusFilter]);
+
+  // // const url = `https://rickandmortyapi.com/api/character`;
+  // const [url, setUrl] = React.useState(
+  //   `https://rickandmortyapi.com/api/character/?status=dead&name=rick` // URL ""?name=rick""        _______//filter_fix//________
+  // );
 
   React.useEffect(() => {
     const getData = async () => {
@@ -29,12 +55,8 @@ function Home() {
 
       try {
         const response = await axios.get(url); // Character request
-        setCharacters((prevCharacters) => [
-          ...prevCharacters,
-          ...response.data.results, // Добавляем новых персонажей к уже загруженным
-        ]);
-        setPageCount(response.data.info.pages);
-        // console.log(response.data.info.pages);
+        setCharacters(response.data.results); // Добавляем новых персонажей к уже загруженным
+        // setPageCount(response.data.info.pages);
         setNextUrl(response.data.info.next); // Устанавливаем URL следующей страницы
       } catch (error) {
         console.error("Error fetching characters:", error);
@@ -42,22 +64,46 @@ function Home() {
         setIsLoading(false); // Сбрасываем флаг загрузки
       }
     };
-    // console.log(pageCount);
+
+    setCharacters([]);
     getData();
-  }, [url, searchValue]); // useEffect срабатывает только при изменении url
-  // console.log(searchValue, "search");
+  }, [url]); // useEffect срабатывает только при изменении url
+
   // Функция для загрузки следующей страницы
-  const handleLoadMore = () => {
-    if (nextUrl) {
-      setUrl(nextUrl); // Устанавливаем URL для следующей страницы
+  const handleLoadMore = async () => {
+    if (!nextUrl) return;
+
+    try {
+      setIsLoading(true);
+      const response = await axios.get(nextUrl);
+      setCharacters((prevCharacters) => [
+        ...prevCharacters,
+        ...response.data.results,
+      ]);
+      setNextUrl(response.data.info.next);
+    } catch (error) {
+      console.error("Error loading more characters:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const onChangePage = (page) => {
-    setCurrentPage(page);
-  };
+  React.useState(() => {
+    const getFilter = async () => {
+      const responseFilterData = await fetchHomeFilter();
+      setFilterData(responseFilterData);
+    };
 
-  // console.log(pageCount);
+    getFilter();
+  }, [filterData]);
+
+  // const onChangePage = (page) => {
+  //   setCurrentPage(page);
+  // };
+
+  console.log(filterData[0]);
+  console.log(filterData[1]);
+  console.log(filterData[2]);
 
   return (
     <section className="main">
@@ -68,13 +114,20 @@ function Home() {
           alt="Rick and Morty"
         />
         <div className="filter__bar">
-          <Search searchValue={searchValue} />
-
+          <div className="main--search">
+            <Search
+              placeholder="Filter by name..."
+              setSearchValue={setSearchValue}
+            />
+          </div>
           <HomeFilter
             popupIsActive={popupIsActive}
             setPopupIsActive={setPopupIsActive}
+            // setGenderFilter={setGenderFilter}
+            // setStatusFilter={setStatusFilter}
             // species={species}
-            // setSpecies={setSpecies}
+            // status={status}
+            // gender={gender}
           />
         </div>
         <section className="characters">
@@ -87,11 +140,11 @@ function Home() {
         <button onClick={handleLoadMore} className="btn__load">
           {nextUrl && !isLoading ? <p>Load more</p> : <p>Loading...</p>}
         </button>
-        <Pagination
+        {/* <Pagination
           currentPage={currentPage}
           pageCount={pageCount}
           onChangePage={onChangePage}
-        />
+        /> */}
       </div>
     </section>
   );

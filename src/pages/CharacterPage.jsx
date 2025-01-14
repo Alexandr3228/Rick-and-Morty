@@ -18,7 +18,7 @@ function CharacterPage() {
       try {
         const response = await axios.get(characterUrl);
         setCharacter(response.data);
-
+        console.log(response.data);
         setEpisodeUrls(response.data.episode);
       } catch (error) {
         console.log(error);
@@ -51,6 +51,8 @@ function CharacterPage() {
     Type: character.type,
     Location: character.location?.name,
   };
+
+  console.log(characterInformationData);
 
   if (!characterData) {
     <div className="">...Loading</div>;
@@ -91,7 +93,31 @@ function CharacterPage() {
               {Object.entries(characterInformationData).map(([key, value]) => (
                 <li key={key} className="characterPage--info--item">
                   <h4>{key}</h4>
-                  <p>{value || "Unknown"}</p>
+                  {key === "Location" && character.location?.url ? (
+                    <Link
+                      to={`/location/${character.location.url
+                        .split("/")
+                        .pop()}`}
+                    >
+                      <p>{value}</p>
+                      <svg
+                        width="8"
+                        height="12"
+                        viewBox="0 0 8 12"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M1.99997 0L0.589966 1.41L5.16997 6L0.589966 10.59L1.99997 12L7.99997 6L1.99997 0Z"
+                          fill="#8E8E93"
+                        />
+                      </svg>
+                    </Link>
+                  ) : (
+                    <p>{value || "Unknown"}</p>
+                  )}
                 </li>
               ))}
             </ul>
@@ -105,6 +131,20 @@ function CharacterPage() {
                     <h4>{episode.episode}</h4>
                     <p>{episode.name}</p>
                     <span>{episode.air_date}</span>
+                    <svg
+                      width="8"
+                      height="12"
+                      viewBox="0 0 8 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M1.99997 0L0.589966 1.41L5.16997 6L0.589966 10.59L1.99997 12L7.99997 6L1.99997 0Z"
+                        fill="#8E8E93"
+                      />
+                    </svg>
                   </li>
                 </Link>
               ))}

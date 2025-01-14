@@ -1,55 +1,91 @@
 @import "../../scss/vars";
 
-.root {
+.sort {
   display: flex;
+  justify-content: center;
   gap: 20px;
 
-  font-size: 16px;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.45);
-}
+  &__item {
+    position: relative;
+    width: 240px;
+    height: 56px;
+    padding: 16px;
 
-.filterBarItem {
-  position: relative;
-}
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.45);
 
-.filterBarLabel {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 240px;
-  height: 56px;
-  padding: 16px 16px 16px 16px;
-  border: 1px solid rgba(0, 0, 0, 0.45);
-  border-radius: 8px;
-}
+    transition: all 0.1s ease;
 
-.filterBarSelector {
-  font-size: 16px;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.5);
-}
+    &:hover {
+      border: 1px solid rgba(0, 0, 0, 0.8);
+    }
 
-.filterBarPopup {
-  position: absolute;
-  display: none;
-  gap: 7px;
-  top: 55px;
-  left: auto;
-  width: 240px;
-  padding: 16px;
-  border: 1px solid rgba(0, 0, 0, 0.45);
-  border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    &:hover .sort__label h2 {
+      color: rgba(0, 0, 0, 0.8);
 
-  &:active {
-    display: grid;
+      transition: all 0.1s ease;
+    }
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & h2 {
+      font-size: 16px;
+      line-height: 1;
+      color: rgba(0, 0, 0, 0.45);
+    }
+  }
+
+  &__popup {
+    position: absolute;
+    width: 240px;
+    left: 0px;
+    top: 54px;
+
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 8px;
+
+    & ul {
+      // display: none;
+      // border: 1px solid rgba(0, 0, 0, 0.8);
+
+      &.active {
+        display: block;
+        position: absolute;
+        bottom: 0;
+      }
+    }
   }
 }
 
-.filterBarPopupItem {
-  font-size: 16px;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.5);
-}
+// .search {
+//   position: relative;
+//   display: flex;
+//   width: 240px;
+//   height: 56px;
+// }
+
+// .searchIcon {
+//   position: absolute;
+//   left: 16px;
+//   top: 50%;
+//   transform: translateY(-50%);
+// }
+// .searchInput {
+//   width: 100%;
+//   padding: 16px 16px 16px 48px;
+//   border: 1px solid rgba(0, 0, 0, 0.45);
+//   border-radius: 8px;
+//   font-size: 16px;
+//   line-height: 1;
+//   color: rgba(0, 0, 0, 0.45);
+
+//   &:focus {
+//     border: 1px solid rgba(0, 0, 0, 0.8);
+//     color: rgba(0, 0, 0, 0.8);
+//   }
+// }

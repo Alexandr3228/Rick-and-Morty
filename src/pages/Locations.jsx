@@ -7,24 +7,50 @@ import { useParams } from "react-router-dom";
 // import FilterBar from "../components/HomeFilter";
 
 function Locations() {
-  const { id } = useParams();
+  // const { id } = useParams();
   const url = `https://rickandmortyapi.com/api/location`;
 
-  const [locationsData, setLocationsData] = React.useState([]);
+  const [locations, setLocations] = React.useState([]);
+  const [nextUrl, setNextUrl] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
-    const getEpisodes = async () => {
+    const getLocations = async () => {
+      if (!url) return; // Prevent 2nd request
+      setIsLoading(true); // Loading flag
       try {
         const response = await axios.get(url);
-        setLocationsData(response.data.results);
+
+        setLocations(response.data.results);
+        setNextUrl(response.data.info.next);
       } catch (error) {
-        console.log(error);
+        console.error("Error to fetch locations", error);
+      } finally {
+        setIsLoading(false);
       }
     };
-    getEpisodes();
+
+    setLocations([]);
+    getLocations();
   }, [url]);
 
-  // console.log(locationsData);
+  const handleLoadMoreLocations = async () => {
+    if (!nextUrl) return;
+
+    try {
+      setIsLoading(true);
+      const response = await axios.get(nextUrl);
+      setLocations((prevLocations) => [
+        ...prevLocations,
+        ...response.data.results,
+      ]);
+      setNextUrl(response.data.info.next);
+    } catch (error) {
+      console.error("Error to fetch more locations", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <section className="locations">
@@ -35,15 +61,15 @@ function Locations() {
           alt="Rick and Morty"
         />
         <div className="locations--search">
-          <Search />
+          <Search placeholder="Filter by name..." />
         </div>
         <ul className="locations--list">
-          {locationsData.map((location) => (
+          {locations.map((location) => (
             <LocationItem key={location.id} {...location} />
           ))}
         </ul>
-        <button className="btn__load">
-          <p>Load more</p>
+        <button onClick={handleLoadMoreLocations} className="btn__load">
+          {nextUrl && !isLoading ? <p>Load more</p> : <p>Loading...</p>}
         </button>
       </div>
     </section>

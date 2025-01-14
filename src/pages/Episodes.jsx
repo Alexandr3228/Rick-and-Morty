@@ -6,23 +6,71 @@ import Search from "../components/Search";
 // import FilterBar from "../components/HomeFilter";
 
 function Episodes() {
-  const url = `https://rickandmortyapi.com/api/episode`;
+  // const url = `https://rickandmortyapi.com/api/episode`;
 
-  const [episodesData, setEpisodesData] = React.useState([]);
+  const [episodes, setEpisodes] = React.useState([]);
+  const [nextUrl, setNextUrl] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [searchValue, setSearchValue] = React.useState("");
+  const [url, setUrl] = React.useState("");
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      const searchParams = new URLSearchParams();
+      if (
+        /^s\d{2}e\d{2}$/i.test(searchValue) ||
+        /^s\d{2}$/i.test(searchValue) ||
+        /^e\d{2}$/i.test(searchValue)
+      ) {
+        searchParams.append("episode", searchValue);
+      } else {
+        searchParams.append("name", searchValue);
+      }
+      const searchQuery = searchParams.toString();
+      setUrl(`https://rickandmortyapi.com/api/episode?${searchQuery}`);
+      console.log(url);
+    }, 400);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchValue]);
 
   React.useEffect(() => {
     const getEpisodes = async () => {
+      if (!url) return;
+      setIsLoading(true);
       try {
         const response = await axios.get(url);
-        setEpisodesData(response.data.results);
+        setEpisodes(response.data.results);
+        setNextUrl(response.data.info.next);
       } catch (error) {
-        console.log(error);
+        console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     getEpisodes();
+    setEpisodes([]);
   }, [url]);
 
-  // console.log(episodesData);
+  const handleLoadMoreEpisodes = async () => {
+    if (!nextUrl) return;
+
+    try {
+      setIsLoading(true);
+      const response = await axios.get(nextUrl);
+      setEpisodes((prevEpisodes) => [
+        ...prevEpisodes,
+        ...response.data.results,
+      ]);
+      setNextUrl(response.data.info.next);
+    } catch {
+      console.error("error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <section className="episodes">
@@ -33,15 +81,18 @@ function Episodes() {
           alt="Rick and Morty"
         />
         <div className="episodes--search">
-          <Search />
+          <Search
+            setSearchValue={setSearchValue}
+            placeholder="Filter by name or episode (ex. S01 or S01E02)"
+          />
         </div>
         <ul className="episodes--list">
-          {episodesData.map((ep) => (
+          {episodes.map((ep) => (
             <EpisodeItem key={ep.id} {...ep} />
           ))}
         </ul>
-        <button className="btn__load">
-          <p>Load more</p>
+        <button onClick={handleLoadMoreEpisodes} className="btn__load">
+          {nextUrl && !isLoading ? <p>Load more</p> : <p>Loading...</p>}
         </button>
       </div>
     </section>

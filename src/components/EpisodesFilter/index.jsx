@@ -3,6 +3,8 @@ import React from "react";
 import styles from "./HomeBar.module.scss";
 
 function EpisodesFilter() {
+  const [popupIsActive, setPopupIsActive] = React.useState(false);
+
   return (
     <div className={styles.root}>
       <div className={styles.filterBarItem}>

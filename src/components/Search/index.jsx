@@ -2,9 +2,7 @@ import React from "react";
 
 import styles from "./Search.module.scss";
 
-function Search({ searchValue, setSearchValue }) {
-  // const [searchValue, setSearchValue] = React.useState("");
-
+function Search({ placeholder, searchValue, setSearchValue }) {
   const onChangeSearchValue = (event) => {
     setSearchValue(event.target.value);
   };
@@ -29,7 +27,7 @@ function Search({ searchValue, setSearchValue }) {
         value={searchValue}
         onChange={(event) => onChangeSearchValue(event)}
         className={styles.searchInput}
-        placeholder="Filter by name..."
+        placeholder={placeholder}
       />
     </div>
   );
