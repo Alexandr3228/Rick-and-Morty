@@ -116,7 +116,13 @@ function CharacterPage() {
                       </svg>
                     </Link>
                   ) : (
-                    <p>{value || "Unknown"}</p>
+                    <p>
+                      {value
+                        ? value.toLowerCase() === "unknown"
+                          ? "Unknown"
+                          : value
+                        : "Unknown"}
+                    </p>
                   )}
                 </li>
               ))}

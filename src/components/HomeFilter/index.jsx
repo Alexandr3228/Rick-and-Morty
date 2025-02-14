@@ -100,8 +100,9 @@ function HomeFilter({
   setStatusFilter,
 }) {
   const [speciesPopupIsActive, setSpeciesPopupIsActive] = React.useState(false);
-  const [statusPopupIsActive, setStatusPopupIsActive] = React.useState(false);
   const [genderPopupIsActive, setGenderPopupIsActive] = React.useState(false);
+  const [statusPopupIsActive, setStatusPopupIsActive] = React.useState(false);
+
   // console.log(popupIsActive);
 
   // const onSelectSort = (value) => {
@@ -141,6 +142,40 @@ function HomeFilter({
               {species.map((species) => (
                 <li key={species} value={species}>
                   {species}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+      <div
+        className={styles.sort__item}
+        onChange={(e) => setGenderFilter(e.target.value)}
+      >
+        <div className={styles.sort__label}>
+          <h2>Gender</h2>
+          <button onClick={() => setGenderPopupIsActive(!genderPopupIsActive)}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="10"
+              height="5"
+              viewBox="0 0 10 5"
+              fill="none"
+            >
+              <path d="M0 0L5 5L10 0H0Z" fill="black" opacity="0.54" />
+            </svg>
+          </button>
+        </div>
+        {genderPopupIsActive && (
+          <div
+            className={`${styles.sort__popup} ${
+              genderPopupIsActive ? styles.active : ""
+            }`}
+          >
+            <ul>
+              {status.map((gender) => (
+                <li key={gender} value={gender}>
+                  {gender}
                 </li>
               ))}
             </ul>

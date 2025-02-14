@@ -1,19 +1,20 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
 import Search from "../components/Search";
 import HomeFilter from "../components/HomeFilter";
 import CharacterItem from "../components/CharacterItem";
 import Pagination from "../components/Pagination";
 
-import { setCharacter } from "../redux/slices/characterSlice";
+import { setCharacters } from "../redux/slices/characterSlice";
+import { characterItem } from "../redux/slices/characterSlice";
 import { fetchHomeFilter } from "../utils/fetchHomeFilter";
 
 function Home() {
   const [popupIsActive, setPopupIsActive] = React.useState(false);
-  //Search for url
-  const [characters, setCharacters] = React.useState([]); //Characters
+  // const [characters, setCharacters] = React.useState([]); //Characters
   // const [pageCount, setPageCount] = React.useState("");
   // const [currentPage, setCurrentPage] = React.useState("");
   const [filterData, setFilterData] = React.useState([]);
@@ -25,6 +26,11 @@ function Home() {
   const [statusFilter, setStatusFilter] = React.useState("");
   const [url, setUrl] = React.useState("");
   const [nextUrl, setNextUrl] = React.useState(null); // URL next page
+
+  const dispatch = useDispatch();
+  const characters = useSelector((state) => state.character.characters);
+
+  // console.log(character);
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
@@ -55,7 +61,11 @@ function Home() {
 
       try {
         const response = await axios.get(url); // Character request
-        setCharacters(response.data.results); // Добавляем новых персонажей к уже загруженным
+        const charactersList = response.data.results;
+        // charactersList.map((characters) => {
+        //   dispatch(setCharacters(characters));
+        // });
+        dispatch(setCharacters(charactersList)); // Добавляем новых персонажей к уже загруженным
         // setPageCount(response.data.info.pages);
         setNextUrl(response.data.info.next); // Устанавливаем URL следующей страницы
       } catch (error) {
@@ -65,7 +75,7 @@ function Home() {
       }
     };
 
-    setCharacters([]);
+    // dispatch(setCharacters([]));
     getData();
   }, [url]); // useEffect срабатывает только при изменении url
 
@@ -76,10 +86,12 @@ function Home() {
     try {
       setIsLoading(true);
       const response = await axios.get(nextUrl);
-      setCharacters((prevCharacters) => [
-        ...prevCharacters,
-        ...response.data.results,
-      ]);
+      dispatch(
+        setCharacters((prevCharacters) => [
+          ...prevCharacters,
+          ...response.data.results,
+        ])
+      );
       setNextUrl(response.data.info.next);
     } catch (error) {
       console.error("Error loading more characters:", error);
@@ -96,15 +108,9 @@ function Home() {
 
     getFilter();
   }, [filterData]);
-
-  // const onChangePage = (page) => {
-  //   setCurrentPage(page);
-  // };
-
-  console.log(filterData[0]);
-  console.log(filterData[1]);
-  console.log(filterData[2]);
-
+  // const characterItem = characters.map((character) => {
+  //   console.log(character);
+  // });
   return (
     <section className="main">
       <div className="container">
@@ -123,8 +129,9 @@ function Home() {
           <HomeFilter
             popupIsActive={popupIsActive}
             setPopupIsActive={setPopupIsActive}
-            // setGenderFilter={setGenderFilter}
-            // setStatusFilter={setStatusFilter}
+            setSpeciesFilter={setSpeciesFilter}
+            setGenderFilter={setGenderFilter}
+            setStatusFilter={setStatusFilter}
             // species={species}
             // status={status}
             // gender={gender}
@@ -132,9 +139,13 @@ function Home() {
         </div>
         <section className="characters">
           <ul className="characters__list">
-            {characters.map((character) => (
-              <CharacterItem key={character.id} {...character} />
-            ))}
+            {!isLoading && characters.length > 0 ? (
+              characters.map((character) => (
+                <CharacterItem key={character.id} {...character} />
+              ))
+            ) : (
+              <p>Loading...</p>
+            )}
           </ul>
         </section>
         <button onClick={handleLoadMore} className="btn__load">

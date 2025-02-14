@@ -3,12 +3,12 @@
 @import "./vars.scss";
 
 html {
-  filter: brightness(0.75);
+  filter: brightness(0.9);
 }
 
 body {
-  background-color: $white; // $white;
-  color: $black; //$black
+  background-color: $white;
+  color: $black;
 }
 
 .container {

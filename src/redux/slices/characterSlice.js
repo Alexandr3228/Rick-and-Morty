@@ -1,20 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  id: null,
-  name: "",
-  status: "",
-  species: "",
-  type: "",
-  gender: "",
-  episode: [],
-  location: {
-    name: "",
-    url: "",
-  },
+  characters: [],
 };
 
-const characterItem = {
+export const characterItem = {
   id: null,
   name: "",
   status: "",
@@ -32,12 +22,13 @@ export const characterSlice = createSlice({
   name: "character",
   initialState,
   reducers: {
-    setCharacter(state, action) {
-      state.character = action.payload;
+    setCharacters(state, action) {
+      state.characters = action.payload;
+      console.log("setCharacters", action);
     },
   },
 });
 
-export const { setCharacter } = characterSlice.actions;
+export const { setCharacters } = characterSlice.actions;
 
 export default characterSlice.reducer;
