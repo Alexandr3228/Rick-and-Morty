@@ -13,17 +13,26 @@
 
     border-radius: 8px;
     border: 1px solid rgba(0, 0, 0, 0.45);
+    cursor: pointer;
 
-    transition: all 0.1s ease;
+    transition: all 0.2s ease;
 
     &:hover {
       border: 1px solid rgba(0, 0, 0, 0.8);
+
+      transition: all 0.2s ease;
     }
 
     &:hover .sort__label h2 {
       color: rgba(0, 0, 0, 0.8);
 
-      transition: all 0.1s ease;
+      transition: all 0.2s ease;
+    }
+
+    &:hover .sort__label svg {
+      fill: rgba(0, 0, 0, 0.8);
+
+      transition: all 0.2s ease;
     }
   }
 
@@ -43,6 +52,16 @@
     & button {
       width: 30px;
       height: 25px;
+
+      & svg {
+        display: flex;
+        align-items: center;
+        margin: 0 auto;
+        width: 20px;
+        height: 20px;
+
+        fill: #b3b3b3;
+      }
     }
   }
 
@@ -52,9 +71,12 @@
     left: 0px;
     top: 54px;
 
-    background-color: #fff;
-    border: 1px solid #000;
+    color: hsla(0, 0%, 0%, 0.45);
+    background-color: hsl(0, 0%, 100%);
+    border: 1px solid hsla(0, 0%, 0%, 0.45);
     border-radius: 8px;
+
+    transition: all 0.1s ease;
 
     & ul {
       display: grid;
@@ -75,6 +97,13 @@
         position: absolute;
         bottom: 0;
       }
+    }
+
+    &:hover {
+      color: (0, 0%, 0%, 0.8);
+      border: 1px solid hsla(0, 0%, 0%, 0.8);
+
+      transition: all 0.1s ease;
     }
   }
 }

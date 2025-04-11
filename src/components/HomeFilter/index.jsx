@@ -46,32 +46,38 @@ function HomeFilter({
 
   return (
     <div className={styles.sort}>
-      <div className={styles.sort__item}>
+      <div
+        className={styles.sort__item}
+        onClick={() => setSpeciesPopupIsActive(!speciesPopupIsActive)}
+      >
         <div className={styles.sort__label}>
           <h2>{selectedSpecies}</h2>
-          <button
-            onClick={() => setSpeciesPopupIsActive(!speciesPopupIsActive)}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="10"
-              height="5"
-              viewBox="0 0 10 5"
-              fill="none"
+          {selectedSpecies === "Species" ? (
+            <></>
+          ) : (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleFilterClick("species", null);
+              }}
             >
-              <path d="M0 0L5 5L10 0H0Z" fill="black" opacity="0.54" />
-            </svg>
-          </button>
+              <svg
+                className={styles.sort__svg}
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                width="100"
+                height="100"
+                viewBox="0 0 24 24"
+              >
+                <path d="M 4.9902344 3.9902344 A 1.0001 1.0001 0 0 0 4.2929688 5.7070312 L 10.585938 12 L 4.2929688 18.292969 A 1.0001 1.0001 0 1 0 5.7070312 19.707031 L 12 13.414062 L 18.292969 19.707031 A 1.0001 1.0001 0 1 0 19.707031 18.292969 L 13.414062 12 L 19.707031 5.7070312 A 1.0001 1.0001 0 0 0 18.980469 3.9902344 A 1.0001 1.0001 0 0 0 18.292969 4.2929688 L 12 10.585938 L 5.7070312 4.2929688 A 1.0001 1.0001 0 0 0 4.9902344 3.9902344 z"></path>
+              </svg>
+            </button>
+          )}
         </div>
         {speciesPopupIsActive && (
           <div className={`${styles.sort__popup} ${styles.active}`}>
             <ul>
-              <li
-                onClick={() => handleFilterClick("species", null)}
-                className={styles.sort__popup_item}
-              >
-                Reset
-              </li>
               {species.map((item) => (
                 <li
                   key={item}
@@ -85,30 +91,38 @@ function HomeFilter({
           </div>
         )}
       </div>
-      <div className={styles.sort__item}>
+      <div
+        className={styles.sort__item}
+        onClick={() => setGenderPopupIsActive(!genderPopupIsActive)}
+      >
         <div className={styles.sort__label}>
           <h2>{selectedGender}</h2>
-          <button onClick={() => setGenderPopupIsActive(!genderPopupIsActive)}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="10"
-              height="5"
-              viewBox="0 0 10 5"
-              fill="none"
+          {selectedGender === "Gender" ? (
+            <></>
+          ) : (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleFilterClick("gender", null);
+              }}
             >
-              <path d="M0 0L5 5L10 0H0Z" fill="black" opacity="0.54" />
-            </svg>
-          </button>
+              <svg
+                className={styles.sort__svg}
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                width="100"
+                height="100"
+                viewBox="0 0 24 24"
+              >
+                <path d="M 4.9902344 3.9902344 A 1.0001 1.0001 0 0 0 4.2929688 5.7070312 L 10.585938 12 L 4.2929688 18.292969 A 1.0001 1.0001 0 1 0 5.7070312 19.707031 L 12 13.414062 L 18.292969 19.707031 A 1.0001 1.0001 0 1 0 19.707031 18.292969 L 13.414062 12 L 19.707031 5.7070312 A 1.0001 1.0001 0 0 0 18.980469 3.9902344 A 1.0001 1.0001 0 0 0 18.292969 4.2929688 L 12 10.585938 L 5.7070312 4.2929688 A 1.0001 1.0001 0 0 0 4.9902344 3.9902344 z"></path>
+              </svg>
+            </button>
+          )}
         </div>
         {genderPopupIsActive && (
           <div className={`${styles.sort__popup} ${styles.active}`}>
             <ul>
-              <li
-                onClick={() => handleFilterClick("gender", null)}
-                className={styles.sort__popup_item}
-              >
-                Reset
-              </li>
               {gender.map((item) => (
                 <li
                   key={item}
@@ -122,30 +136,38 @@ function HomeFilter({
           </div>
         )}
       </div>
-      <div className={styles.sort__item}>
+      <div
+        className={styles.sort__item}
+        onClick={() => setStatusPopupIsActive(!statusPopupIsActive)}
+      >
         <div className={styles.sort__label}>
           <h2>{selectedStatus}</h2>
-          <button onClick={() => setStatusPopupIsActive(!statusPopupIsActive)}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="10"
-              height="5"
-              viewBox="0 0 10 5"
-              fill="none"
+          {selectedStatus === "Status" ? (
+            <></>
+          ) : (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleFilterClick("status", null);
+              }}
             >
-              <path d="M0 0L5 5L10 0H0Z" fill="black" opacity="0.54" />
-            </svg>
-          </button>
+              <svg
+                className={styles.sort__svg}
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                width="100"
+                height="100"
+                viewBox="0 0 24 24"
+              >
+                <path d="M 4.9902344 3.9902344 A 1.0001 1.0001 0 0 0 4.2929688 5.7070312 L 10.585938 12 L 4.2929688 18.292969 A 1.0001 1.0001 0 1 0 5.7070312 19.707031 L 12 13.414062 L 18.292969 19.707031 A 1.0001 1.0001 0 1 0 19.707031 18.292969 L 13.414062 12 L 19.707031 5.7070312 A 1.0001 1.0001 0 0 0 18.980469 3.9902344 A 1.0001 1.0001 0 0 0 18.292969 4.2929688 L 12 10.585938 L 5.7070312 4.2929688 A 1.0001 1.0001 0 0 0 4.9902344 3.9902344 z"></path>
+              </svg>
+            </button>
+          )}
         </div>
         {statusPopupIsActive && (
           <div className={`${styles.sort__popup} ${styles.active}`}>
             <ul>
-              <li
-                onClick={() => handleFilterClick("status", null)}
-                className={styles.sort__popup_item}
-              >
-                Reset
-              </li>
               {status.map((item) => (
                 <li
                   key={item}
