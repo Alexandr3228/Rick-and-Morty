@@ -14,103 +14,114 @@ import { fetchHomeFilter } from "../utils/fetchHomeFilter";
 
 function Home() {
   const [popupIsActive, setPopupIsActive] = React.useState(false);
-  // const [characters, setCharacters] = React.useState([]); //Characters
-  // const [pageCount, setPageCount] = React.useState("");
-  // const [currentPage, setCurrentPage] = React.useState("");
   const [filterData, setFilterData] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(false); //Check loading page
-  // const search = searchValue ? `?name=${searchValue}` : "";
-  const [searchValue, setSearchValue] = React.useState("");
-  const [speciesFilter, setSpeciesFilter] = React.useState("");
-  const [genderFilter, setGenderFilter] = React.useState("");
-  const [statusFilter, setStatusFilter] = React.useState("");
-  const [url, setUrl] = React.useState("");
-  const [nextUrl, setNextUrl] = React.useState(null); // URL next page
+  const [species, setSpecies] = React.useState([]);
+  const [gender, setGender] = React.useState([]);
+  const [status, setStatus] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [nextUrl, setNextUrl] = React.useState(null);
+  const [url, setUrl] = React.useState(
+    "https://rickandmortyapi.com/api/character"
+  );
 
   const dispatch = useDispatch();
   const characters = useSelector((state) => state.character.characters);
 
-  // console.log(character);
+  // console.log(characters);
+
+  // Состояния для фильтрации
+  const [searchValue, setSearchValue] = React.useState("");
+  const [filters, setFilters] = React.useState({
+    species: "",
+    status: "",
+    gender: "",
+  });
+
+  // Данные для фильтров
+  const [filterOptions, setFilterOptions] = React.useState({
+    species: [],
+    status: [],
+    gender: [],
+  });
+
+  // Загрузка данных для фильтров
+  React.useEffect(() => {
+    const loadFilterData = async () => {
+      try {
+        const [species, status, gender] = await fetchHomeFilter();
+        setFilterOptions({ species, status, gender });
+      } catch (error) {
+        console.error("Error loading filter data:", error);
+      }
+    };
+    loadFilterData();
+  }, []);
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
-      const searchParams = new URLSearchParams();
-      if (searchValue) searchParams.append("name", searchValue);
-      if (speciesFilter) searchParams.append("species", speciesFilter);
-      if (genderFilter) searchParams.append("gender", genderFilter);
-      if (statusFilter) searchParams.append("status", statusFilter);
+      const params = new URLSearchParams();
+      if (searchValue) params.append("name", searchValue);
+      if (filters.species) params.append("species", filters.species);
+      if (filters.status) params.append("status", filters.status);
+      if (filters.gender) params.append("gender", filters.gender);
 
-      const searchQuery = searchParams.toString();
-      setUrl(`https://rickandmortyapi.com/api/character?${searchQuery}`);
+      const searchQuery = params.toString();
+      setUrl(`https://rickandmortyapi.com/api/character?${params.toString()}`);
     }, 400);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [searchValue, speciesFilter, genderFilter, statusFilter]);
-
-  // // const url = `https://rickandmortyapi.com/api/character`;
-  // const [url, setUrl] = React.useState(
-  //   `https://rickandmortyapi.com/api/character/?status=dead&name=rick` // URL ""?name=rick""        _______//filter_fix//________
-  // );
+  }, [searchValue, filters]);
 
   React.useEffect(() => {
-    const getData = async () => {
-      if (!url) return; // Prevent 2nd request
-      setIsLoading(true); // Loading flag
+    const loadCharacters = async () => {
+      if (!url) return; // Не делать 2ой запрос
 
+      setIsLoading(true);
       try {
-        const response = await axios.get(url); // Character request
-        const charactersList = response.data.results;
-        // charactersList.map((characters) => {
-        //   dispatch(setCharacters(characters));
-        // });
-        dispatch(setCharacters(charactersList)); // Добавляем новых персонажей к уже загруженным
-        // setPageCount(response.data.info.pages);
+        const response = await axios.get(url); // Получаем персонажей
+        dispatch(setCharacters(response.data.results)); // Добавляем новых персонажей к уже загруженным
         setNextUrl(response.data.info.next); // Устанавливаем URL следующей страницы
       } catch (error) {
         console.error("Error fetching characters:", error);
+        dispatch(setCharacters([]));
       } finally {
-        setIsLoading(false); // Сбрасываем флаг загрузки
+        setIsLoading(false);
       }
     };
 
-    // dispatch(setCharacters([]));
-    getData();
-  }, [url]); // useEffect срабатывает только при изменении url
+    dispatch(setCharacters([]));
+    loadCharacters();
+  }, [url, dispatch]);
 
   // Функция для загрузки следующей страницы
   const handleLoadMore = async () => {
     if (!nextUrl) return;
 
+    const scrollPosition =
+      window.pageYOffset || document.documentElement.scrollTop;
+
     try {
       setIsLoading(true);
       const response = await axios.get(nextUrl);
-      dispatch(
-        setCharacters((prevCharacters) => [
-          ...prevCharacters,
-          ...response.data.results,
-        ])
-      );
+      dispatch(setCharacters([...characters, ...response.data.results]));
       setNextUrl(response.data.info.next);
     } catch (error) {
       console.error("Error loading more characters:", error);
     } finally {
       setIsLoading(false);
     }
+
+    requestAnimationFrame(() => {
+      window.scrollTo(0, scrollPosition);
+    });
   };
 
-  React.useState(() => {
-    const getFilter = async () => {
-      const responseFilterData = await fetchHomeFilter();
-      setFilterData(responseFilterData);
-    };
+  const handleFilterChange = (type, value) => {
+    setFilters((prev) => ({ ...prev, [type]: value }));
+  };
 
-    getFilter();
-  }, [filterData]);
-  // const characterItem = characters.map((character) => {
-  //   console.log(character);
-  // });
   return (
     <section className="main">
       <div className="container">
@@ -127,14 +138,12 @@ function Home() {
             />
           </div>
           <HomeFilter
-            popupIsActive={popupIsActive}
-            setPopupIsActive={setPopupIsActive}
-            setSpeciesFilter={setSpeciesFilter}
-            setGenderFilter={setGenderFilter}
-            setStatusFilter={setStatusFilter}
-            // species={species}
-            // status={status}
-            // gender={gender}
+            species={filterOptions.species}
+            status={filterOptions.status}
+            gender={filterOptions.gender}
+            onSpeciesChange={(value) => handleFilterChange("species", value)}
+            onGenderChange={(value) => handleFilterChange("gender", value)}
+            onStatusChange={(value) => handleFilterChange("status", value)}
           />
         </div>
         <section className="characters">
@@ -148,14 +157,13 @@ function Home() {
             )}
           </ul>
         </section>
-        <button onClick={handleLoadMore} className="btn__load">
+        <button
+          onClick={handleLoadMore}
+          className="btn__load"
+          disabled={!nextUrl}
+        >
           {nextUrl && !isLoading ? <p>Load more</p> : <p>Loading...</p>}
         </button>
-        {/* <Pagination
-          currentPage={currentPage}
-          pageCount={pageCount}
-          onChangePage={onChangePage}
-        /> */}
       </div>
     </section>
   );
