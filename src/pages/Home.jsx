@@ -1,23 +1,20 @@
-/* eslint-disable no-unused-vars */
 import React from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
 import Search from "../components/Search";
-import HomeFilter from "../components/HomeFilter";
+import Filter from "../components/Filter";
 import CharacterItem from "../components/CharacterItem";
-import Pagination from "../components/Pagination";
 
 import { setCharacters } from "../redux/slices/characterSlice";
-import { characterItem } from "../redux/slices/characterSlice";
 import { fetchHomeFilter } from "../utils/fetchHomeFilter";
 
 function Home() {
-  const [popupIsActive, setPopupIsActive] = React.useState(false);
-  const [filterData, setFilterData] = React.useState([]);
-  const [species, setSpecies] = React.useState([]);
-  const [gender, setGender] = React.useState([]);
-  const [status, setStatus] = React.useState([]);
+  // const [popupIsActive, setPopupIsActive] = React.useState(false);
+  // const [filterData, setFilterData] = React.useState([]);
+  // const [species, setSpecies] = React.useState([]);
+  // const [gender, setGender] = React.useState([]);
+  // const [status, setStatus] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [nextUrl, setNextUrl] = React.useState(null);
   const [url, setUrl] = React.useState(
@@ -26,8 +23,6 @@ function Home() {
 
   const dispatch = useDispatch();
   const characters = useSelector((state) => state.character.characters);
-
-  // console.log(characters);
 
   // Состояния для фильтрации
   const [searchValue, setSearchValue] = React.useState("");
@@ -44,6 +39,8 @@ function Home() {
     gender: [],
   });
 
+  const scrollPositionRef = React.useRef(0);
+
   // Загрузка данных для фильтров
   React.useEffect(() => {
     const loadFilterData = async () => {
@@ -57,7 +54,12 @@ function Home() {
     loadFilterData();
   }, []);
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
+    const scrollPosition =
+      window.pageYOffset || document.documentElement.scrollTop;
+
+    scrollPositionRef.current = scrollPosition;
+
     const timer = setTimeout(() => {
       const params = new URLSearchParams();
       if (searchValue) params.append("name", searchValue);
@@ -65,12 +67,14 @@ function Home() {
       if (filters.status) params.append("status", filters.status);
       if (filters.gender) params.append("gender", filters.gender);
 
-      const searchQuery = params.toString();
       setUrl(`https://rickandmortyapi.com/api/character?${params.toString()}`);
     }, 400);
 
     return () => {
       clearTimeout(timer);
+      window.requestAnimationFrame(() => {
+        window.scrollTo(0, scrollPositionRef.current);
+      });
     };
   }, [searchValue, filters]);
 
@@ -113,7 +117,7 @@ function Home() {
       setIsLoading(false);
     }
 
-    requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
       window.scrollTo(0, scrollPosition);
     });
   };
@@ -137,13 +141,11 @@ function Home() {
               setSearchValue={setSearchValue}
             />
           </div>
-          <HomeFilter
-            species={filterOptions.species}
-            status={filterOptions.status}
-            gender={filterOptions.gender}
-            onSpeciesChange={(value) => handleFilterChange("species", value)}
-            onGenderChange={(value) => handleFilterChange("gender", value)}
-            onStatusChange={(value) => handleFilterChange("status", value)}
+          <Filter
+            {...filterOptions}
+            onSpeciesChange={(val) => handleFilterChange("species", val)}
+            onGenderChange={(val) => handleFilterChange("gender", val)}
+            onStatusChange={(val) => handleFilterChange("status", val)}
           />
         </div>
         <section className="characters">
