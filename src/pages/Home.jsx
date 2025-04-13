@@ -10,12 +10,6 @@ import { setCharacters } from "../redux/slices/characterSlice";
 import { fetchHomeFilter } from "../utils/fetchHomeFilter";
 
 function Home() {
-  // const [popupIsActive, setPopupIsActive] = React.useState(false);
-  // const [filterData, setFilterData] = React.useState([]);
-  // const [species, setSpecies] = React.useState([]);
-  // const [gender, setGender] = React.useState([]);
-  // const [status, setStatus] = React.useState([]);
-
   const [isLoading, setIsLoading] = React.useState(false);
   const [nextUrl, setNextUrl] = React.useState(null);
   const [url, setUrl] = React.useState(
@@ -67,6 +61,8 @@ function Home() {
 
     return () => {
       clearTimeout(timer);
+      scrollPositionRef.current = 0;
+      window.scrollTo(0, 0);
     };
   }, [searchValue, filters]);
 
@@ -136,17 +132,31 @@ function Home() {
           alt="Rick and Morty"
         />
         <div className="filter__bar">
-          <div className="main--search">
-            <Search
-              placeholder="Filter by name..."
-              setSearchValue={setSearchValue}
-            />
-          </div>
+          <Search
+            placeholder="Filter by name..."
+            setSearchValue={setSearchValue}
+          />
           <Filter
-            {...filterOptions}
-            onSpeciesChange={(val) => handleFilterChange("species", val)}
-            onGenderChange={(val) => handleFilterChange("gender", val)}
-            onStatusChange={(val) => handleFilterChange("status", val)}
+            filters={[
+              {
+                key: "species",
+                label: "Species",
+                options: filterOptions.species,
+                onChange: (val) => handleFilterChange("species", val),
+              },
+              {
+                key: "gender",
+                label: "Gender",
+                options: filterOptions.gender,
+                onChange: (val) => handleFilterChange("gender", val),
+              },
+              {
+                key: "status",
+                label: "Status",
+                options: filterOptions.status,
+                onChange: (val) => handleFilterChange("status", val),
+              },
+            ]}
           />
         </div>
         <section className="characters">
