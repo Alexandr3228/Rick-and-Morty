@@ -39,10 +39,6 @@ body {
     width: 100%;
   }
 
-  &--search {
-    width: 240px;
-  }
-
   .characters {
     width: 100%;
     margin-top: 60px;
@@ -290,7 +286,12 @@ body {
     margin-bottom: 15px;
   }
 
-  &--search {
+  .filter__bar {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    max-width: 846px;
     margin: 0 auto;
   }
 
