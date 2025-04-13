@@ -15,12 +15,14 @@ function Home() {
   // const [species, setSpecies] = React.useState([]);
   // const [gender, setGender] = React.useState([]);
   // const [status, setStatus] = React.useState([]);
+
   const [isLoading, setIsLoading] = React.useState(false);
   const [nextUrl, setNextUrl] = React.useState(null);
   const [url, setUrl] = React.useState(
     "https://rickandmortyapi.com/api/character"
   );
 
+  const scrollPositionRef = React.useRef(0);
   const dispatch = useDispatch();
   const characters = useSelector((state) => state.character.characters);
 
@@ -39,8 +41,6 @@ function Home() {
     gender: [],
   });
 
-  const scrollPositionRef = React.useRef(0);
-
   // Загрузка данных для фильтров
   React.useEffect(() => {
     const loadFilterData = async () => {
@@ -54,12 +54,7 @@ function Home() {
     loadFilterData();
   }, []);
 
-  React.useLayoutEffect(() => {
-    const scrollPosition =
-      window.pageYOffset || document.documentElement.scrollTop;
-
-    scrollPositionRef.current = scrollPosition;
-
+  React.useEffect(() => {
     const timer = setTimeout(() => {
       const params = new URLSearchParams();
       if (searchValue) params.append("name", searchValue);
@@ -72,9 +67,6 @@ function Home() {
 
     return () => {
       clearTimeout(timer);
-      window.requestAnimationFrame(() => {
-        window.scrollTo(0, scrollPositionRef.current);
-      });
     };
   }, [searchValue, filters]);
 
@@ -103,7 +95,7 @@ function Home() {
   const handleLoadMore = async () => {
     if (!nextUrl) return;
 
-    const scrollPosition =
+    scrollPositionRef.current =
       window.pageYOffset || document.documentElement.scrollTop;
 
     try {
@@ -116,15 +108,24 @@ function Home() {
     } finally {
       setIsLoading(false);
     }
-
-    window.requestAnimationFrame(() => {
-      window.scrollTo(0, scrollPosition);
-    });
   };
 
   const handleFilterChange = (type, value) => {
     setFilters((prev) => ({ ...prev, [type]: value }));
+
+    scrollPositionRef.current = 0;
+    window.scrollTo(0, 0);
   };
+
+  React.useEffect(() => {
+    if (!isLoading) {
+      window.requestAnimationFrame(() => {
+        setTimeout(() => {
+          window.scrollTo(0, scrollPositionRef.current);
+        }, 0);
+      });
+    }
+  }, [characters, isLoading]);
 
   return (
     <section className="main">
