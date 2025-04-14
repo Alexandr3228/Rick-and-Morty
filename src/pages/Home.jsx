@@ -2,12 +2,12 @@ import React from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
-import Search from "../components/Search";
-import Filter from "../components/Filter";
+import Search from "../components/Search/index.tsx";
+import Filter from "../components/Filter/index.tsx";
 import CharacterItem from "../components/CharacterItem";
 
-import { setCharacters } from "../redux/slices/characterSlice";
-import { fetchHomeFilter } from "../utils/fetchHomeFilter";
+import { setCharacters } from "../redux/slices/characterSlice.ts";
+import { fetchHomeFilter } from "../utils/fetchHomeFilter.ts";
 
 function Home() {
   const [isLoading, setIsLoading] = React.useState(false);
@@ -74,6 +74,7 @@ function Home() {
       try {
         const response = await axios.get(url); // Получаем персонажей
         dispatch(setCharacters(response.data.results)); // Добавляем новых персонажей к уже загруженным
+        console.log(response.data);
         setNextUrl(response.data.info.next); // Устанавливаем URL следующей страницы
       } catch (error) {
         console.error("Error fetching characters:", error);
@@ -134,6 +135,7 @@ function Home() {
         <div className="filter__bar">
           <Search
             placeholder="Filter by name..."
+            searchValue={searchValue}
             setSearchValue={setSearchValue}
           />
           <Filter

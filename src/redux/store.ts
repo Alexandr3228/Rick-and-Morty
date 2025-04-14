@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { useDispatch } from "react-redux";
 
-import character from "./slices/characterSlice";
+import character from "./slices/characterSlice.ts";
 
 export const store = configureStore({
   reducer: {

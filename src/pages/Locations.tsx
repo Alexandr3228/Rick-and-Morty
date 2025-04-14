@@ -1,17 +1,17 @@
 import React from "react";
 import axios from "axios";
 
-import LocationItem from "../components/LocationItem";
-import Search from "../components/Search";
-import Filter from "../components/Filter";
-import { fetchLocationsFilter } from "../utils/fetchLocationsFilter";
+import LocationItem from "../components/LocationItem.jsx";
+import Search from "../components/Search/index.tsx";
+import Filter from "../components/Filter/index.tsx";
+import { fetchLocationsFilter } from "../utils/fetchLocationsFilter.ts";
 
 function Locations() {
   const [url, setUrl] = React.useState(
     `https://rickandmortyapi.com/api/location`
   );
 
-  const [locations, setLocations] = React.useState([]);
+  const [locations, setLocations] = React.useState<Location[]>([]);
   const [nextUrl, setNextUrl] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const scrollPositionRef = React.useRef(0);
@@ -22,8 +22,19 @@ function Locations() {
     dimension: "",
   });
 
+  type Location = {
+    id: number;
+    name: string;
+    type: string;
+    dimension: string;
+    // и другие поля, которые могут быть у локации
+  };
+
   // Данные для фильтров
-  const [filterOptions, setFilterOptions] = React.useState({
+  const [filterOptions, setFilterOptions] = React.useState<{
+    type: string[];
+    dimension: string[];
+  }>({
     type: [],
     dimension: [],
   });
@@ -126,6 +137,7 @@ function Locations() {
         <div className="filter__bar">
           <Search
             placeholder="Filter by name..."
+            searchValue={searchValue}
             setSearchValue={setSearchValue}
           />
           <Filter

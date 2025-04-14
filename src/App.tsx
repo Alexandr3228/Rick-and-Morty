@@ -4,13 +4,13 @@ import { Routes, Route } from "react-router-dom";
 import "./scss/app.scss";
 
 import Home from "./pages/Home";
-import Locations from "./pages/Locations";
+import Locations from "./pages/Locations.tsx";
 import Episodes from "./pages/Episodes";
 
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Header from "./components/Header.tsx";
+import Footer from "./components/Footer.tsx";
 import CharacterPage from "./pages/CharacterPage";
-import LocationPage from "./pages/LocationPage";
+import LocationPage from "./pages/LocationPage.tsx";
 import EpisodePage from "./pages/EpisodePage";
 
 function App() {

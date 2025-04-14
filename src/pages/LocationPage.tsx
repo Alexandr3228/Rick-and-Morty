@@ -1,9 +1,9 @@
 import React from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
-import CharacterItem from "../components/CharacterItem";
+import LocationItem from "../components/LocationItem";
 
-function LocationPage({}) {
+function LocationPage() {
   const [location, setLocation] = React.useState([]);
   const [characterData, setCharacterData] = React.useState([]);
   const [characterUrls, setCharacterUrls] = React.useState([]);
@@ -17,7 +17,6 @@ function LocationPage({}) {
         const response = await axios.get(locationUrl);
         setLocation(response.data);
         setCharacterUrls(response.data.residents);
-        // console.log(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -78,7 +77,7 @@ function LocationPage({}) {
           <h3>Residents</h3>
           <ul className="locationPage--residents--list">
             {characterData.map((character) => (
-              <CharacterItem key={character.id} {...character} />
+              <LocationItem key={character.id} {...character} />
             ))}
           </ul>
         </div>

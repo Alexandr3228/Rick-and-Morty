@@ -1,11 +1,9 @@
 import React from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
-import EpisodePage from "./EpisodePage";
 
 function CharacterPage() {
   const [character, setCharacter] = React.useState([]);
-  const [characterData, setCharacterData] = React.useState([]);
   const [episodeData, setEpisodeData] = React.useState([]);
   const [episodeUrls, setEpisodeUrls] = React.useState([]);
 
@@ -18,7 +16,6 @@ function CharacterPage() {
       try {
         const response = await axios.get(characterUrl);
         setCharacter(response.data);
-        console.log(response.data);
         setEpisodeUrls(response.data.episode);
       } catch (error) {
         console.log(error);
@@ -54,7 +51,7 @@ function CharacterPage() {
 
   console.log(characterInformationData);
 
-  if (!characterData) {
+  if (!character) {
     <div className="">...Loading</div>;
   }
 

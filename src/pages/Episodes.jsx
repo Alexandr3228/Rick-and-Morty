@@ -2,8 +2,7 @@ import React from "react";
 import axios from "axios";
 
 import EpisodeItem from "../components/EpisodeItem";
-import Search from "../components/Search";
-// import FilterBar from "../components/HomeFilter";
+import Search from "../components/Search/index.tsx";
 
 function Episodes() {
   // const url = `https://rickandmortyapi.com/api/episode`;
@@ -28,13 +27,12 @@ function Episodes() {
       }
       const searchQuery = searchParams.toString();
       setUrl(`https://rickandmortyapi.com/api/episode?${searchQuery}`);
-      console.log(url);
     }, 400);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [searchValue]);
+  }, [url, searchValue]);
 
   React.useEffect(() => {
     const getEpisodes = async () => {

@@ -1,9 +1,21 @@
 import React from "react";
 
-import FilterItem from "../FilterItem";
+import FilterItem from "../FilterItem/index.tsx";
 import styles from "./Filter.module.scss";
 
-function Filter({ filters = [] }) {
+interface FilterOption {
+  key: string;
+  label: string;
+  options: string[]; // или другой тип, если options может быть не строкой
+  onChange: (val: string) => void; // или (val: any), если тип val более гибкий
+}
+
+// Тип для пропсов компонента Filter
+interface FilterProps {
+  filters: FilterOption[]; // filters это массив объектов FilterOption
+}
+
+const Filter: React.FC<FilterProps> = ({ filters = [] }) => {
   const [selected, setSelected] = React.useState({});
 
   const handleChange = (key, val) => {
@@ -24,6 +36,6 @@ function Filter({ filters = [] }) {
       ))}
     </div>
   );
-}
+};
 
 export default Filter;
