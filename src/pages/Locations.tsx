@@ -1,17 +1,24 @@
 import React from "react";
 import axios from "axios";
 
-import LocationItem from "../components/LocationItem.jsx";
+import LocationItem from "../components/LocationItem.tsx";
 import Search from "../components/Search/index.tsx";
 import Filter from "../components/Filter/index.tsx";
 import { fetchLocationsFilter } from "../utils/fetchLocationsFilter.ts";
 
-function Locations() {
+export type LocationItemType = {
+  id: number;
+  name: string;
+  type: string;
+  dimension: string;
+};
+
+const Locations: React.FC = () => {
   const [url, setUrl] = React.useState(
     `https://rickandmortyapi.com/api/location`
   );
 
-  const [locations, setLocations] = React.useState<Location[]>([]);
+  const [locations, setLocations] = React.useState<LocationItemType[]>([]);
   const [nextUrl, setNextUrl] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const scrollPositionRef = React.useRef(0);
@@ -21,14 +28,6 @@ function Locations() {
     type: "",
     dimension: "",
   });
-
-  type Location = {
-    id: number;
-    name: string;
-    type: string;
-    dimension: string;
-    // и другие поля, которые могут быть у локации
-  };
 
   // Данные для фильтров
   const [filterOptions, setFilterOptions] = React.useState<{
@@ -83,9 +82,8 @@ function Locations() {
         setIsLoading(false);
       }
     };
-
-    setLocations([]);
     getLocations();
+    setLocations([]);
   }, [url]);
 
   const handleLoadMoreLocations = async () => {
@@ -168,6 +166,6 @@ function Locations() {
       </div>
     </section>
   );
-}
+};
 
 export default Locations;

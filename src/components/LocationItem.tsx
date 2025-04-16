@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function LocationItem({ id, name, type }) {
+import { LocationItemType } from "../pages/Locations";
+
+const LocationItem: React.FC<LocationItemType> = ({ id, name, type }) => {
   return (
     <li key={id} className="location__item">
       <Link key={id} to={`/location/${id}`}>
@@ -12,6 +14,6 @@ function LocationItem({ id, name, type }) {
       </Link>
     </li>
   );
-}
+};
 
 export default LocationItem;

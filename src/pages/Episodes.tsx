@@ -1,17 +1,23 @@
 import React from "react";
 import axios from "axios";
 
-import EpisodeItem from "../components/EpisodeItem";
+import EpisodeItem from "../components/EpisodeItem.tsx";
 import Search from "../components/Search/index.tsx";
 
-function Episodes() {
-  // const url = `https://rickandmortyapi.com/api/episode`;
+export type EpisodeItemType = {
+  id: number;
+  name: string;
+  air_date: string;
+  episode: string;
+  characters: string[];
+};
 
-  const [episodes, setEpisodes] = React.useState([]);
-  const [nextUrl, setNextUrl] = React.useState(null);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [searchValue, setSearchValue] = React.useState("");
-  const [url, setUrl] = React.useState("");
+const Episodes: React.FC = () => {
+  const [episodes, setEpisodes] = React.useState<EpisodeItemType[]>([]);
+  const [nextUrl, setNextUrl] = React.useState<string | null>(null);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [searchValue, setSearchValue] = React.useState<string>("");
+  const [url, setUrl] = React.useState<string>("");
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
@@ -43,7 +49,7 @@ function Episodes() {
         setEpisodes(response.data.results);
         setNextUrl(response.data.info.next);
       } catch (error) {
-        console.error(error);
+        console.error("Error to fetch episodes", error);
       } finally {
         setIsLoading(false);
       }
@@ -80,21 +86,24 @@ function Episodes() {
         />
         <div className="episodes--search">
           <Search
+            searchValue={searchValue}
             setSearchValue={setSearchValue}
             placeholder="Filter by name or episode (ex. S01 or S01E02)"
           />
         </div>
-        <ul className="episodes--list">
-          {episodes.map((ep) => (
-            <EpisodeItem key={ep.id} {...ep} />
-          ))}
-        </ul>
+        {episodes.length > 0 && (
+          <ul className="episodes--list">
+            {episodes.map((ep) => (
+              <EpisodeItem key={ep.id} {...ep} />
+            ))}
+          </ul>
+        )}
         <button onClick={handleLoadMoreEpisodes} className="btn__load">
           {nextUrl && !isLoading ? <p>Load more</p> : <p>Loading...</p>}
         </button>
       </div>
     </section>
   );
-}
+};
 
 export default Episodes;

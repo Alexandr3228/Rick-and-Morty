@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type Location = {
+export type LocationType = {
   name: string;
   url: string;
 };
@@ -8,12 +8,17 @@ export type Location = {
 export interface CharacterItemType {
   id: number;
   name: string;
-  status: string;
   species: string;
-  type: string;
-  gender: string;
-  episode: string[];
-  location: Location;
+  image: string;
+  status?: string;
+  gender?: string;
+  type?: string;
+  episode?: string[];
+  origin?: {
+    name: string;
+    url: string;
+  };
+  location?: Location;
 }
 
 export interface CharacterListState {

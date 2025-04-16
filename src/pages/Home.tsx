@@ -4,12 +4,25 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Search from "../components/Search/index.tsx";
 import Filter from "../components/Filter/index.tsx";
-import CharacterItem from "../components/CharacterItem";
+import CharacterItem from "../components/CharacterItem.jsx";
 
 import { setCharacters } from "../redux/slices/characterSlice.ts";
 import { fetchHomeFilter } from "../utils/fetchHomeFilter.ts";
+import { RootState } from "../redux/store.ts";
 
-function Home() {
+export type FilterType = {
+  species: string;
+  gender: string;
+  status: string;
+};
+
+export type FilterOptionsType = {
+  species: string[];
+  gender: string[];
+  status: string[];
+};
+
+const Home: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [nextUrl, setNextUrl] = React.useState(null);
   const [url, setUrl] = React.useState(
@@ -18,18 +31,20 @@ function Home() {
 
   const scrollPositionRef = React.useRef(0);
   const dispatch = useDispatch();
-  const characters = useSelector((state) => state.character.characters);
+  const characters = useSelector(
+    (state: RootState) => state.character.characters
+  );
 
   // Состояния для фильтрации
   const [searchValue, setSearchValue] = React.useState("");
-  const [filters, setFilters] = React.useState({
+  const [filters, setFilters] = React.useState<FilterType>({
     species: "",
     status: "",
     gender: "",
   });
 
   // Данные для фильтров
-  const [filterOptions, setFilterOptions] = React.useState({
+  const [filterOptions, setFilterOptions] = React.useState<FilterOptionsType>({
     species: [],
     status: [],
     gender: [],
@@ -182,6 +197,6 @@ function Home() {
       </div>
     </section>
   );
-}
+};
 
 export default Home;

@@ -2,8 +2,18 @@ import React from "react";
 
 import styles from "./Search.module.scss";
 
-function Search({ placeholder, searchValue, setSearchValue }) {
-  const onChangeSearchValue = (event) => {
+export type SearchType = {
+  placeholder: string;
+  searchValue: string;
+  setSearchValue: (value: string) => void;
+};
+
+const Search: React.FC<SearchType> = ({
+  placeholder,
+  searchValue,
+  setSearchValue,
+}) => {
+  const onChangeSearchValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
 
@@ -31,6 +41,6 @@ function Search({ placeholder, searchValue, setSearchValue }) {
       />
     </div>
   );
-}
+};
 
 export default Search;

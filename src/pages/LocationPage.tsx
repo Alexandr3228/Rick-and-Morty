@@ -1,17 +1,23 @@
 import React from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
-import LocationItem from "../components/LocationItem";
 
-function LocationPage() {
-  const [location, setLocation] = React.useState([]);
-  const [characterData, setCharacterData] = React.useState([]);
-  const [characterUrls, setCharacterUrls] = React.useState([]);
+import CharacterItem from "../components/CharacterItem";
+
+import { LocationItemType } from "../pages/Locations";
+import { CharacterItemType } from "../redux/slices/characterSlice";
+
+const LocationPage: React.FC = () => {
+  const [location, setLocation] = React.useState<LocationItemType | null>(null);
+  const [characterData, setCharacterData] = React.useState<
+    CharacterItemType[] | null
+  >(null);
+  const [characterUrls, setCharacterUrls] = React.useState<string[]>([]);
   const { id } = useParams();
   const locationUrl = `https://rickandmortyapi.com/api/location/` + id;
 
   React.useEffect(() => {
-    //Fetch character
+    //Fetch Location
     const getLocation = async () => {
       try {
         const response = await axios.get(locationUrl);
@@ -61,29 +67,33 @@ function LocationPage() {
           </button>
         </Link>
         <div className="locationPage--info">
-          <h2>{location.name}</h2>
+          <h2>{location?.name}</h2>
           <div className="locationPage--subInfo">
             <div className="locationPage--subInfo--item">
               <p>Type</p>
-              <span>{location.type}</span>
+              <span>{location?.type}</span>
             </div>
             <div className="locationPage--subInfo--item">
               <p>Dimension</p>
-              <span>{location.dimension}</span>
+              <span>{location?.dimension}</span>
             </div>
           </div>
         </div>
         <div className="locationPage--residents">
           <h3>Residents</h3>
           <ul className="locationPage--residents--list">
-            {characterData.map((character) => (
-              <LocationItem key={character.id} {...character} />
-            ))}
+            {characterData ? (
+              characterData.map((character) => (
+                <CharacterItem key={character.id} {...character} />
+              ))
+            ) : (
+              <></>
+            )}
           </ul>
         </div>
       </div>
     </section>
   );
-}
+};
 
 export default LocationPage;

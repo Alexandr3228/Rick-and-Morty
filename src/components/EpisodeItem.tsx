@@ -1,7 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function EpisodeItem({ id, name, air_date, episode }) {
+import { EpisodeItemType } from "../pages/Episodes";
+
+const EpisodeItem: React.FC<EpisodeItemType> = ({
+  id,
+  name,
+  air_date,
+  episode,
+}) => {
   return (
     <li key={id} className="episode__item">
       <Link key={id} to={`/episode/${id}`}>
@@ -13,6 +20,6 @@ function EpisodeItem({ id, name, air_date, episode }) {
       </Link>
     </li>
   );
-}
+};
 
 export default EpisodeItem;

@@ -1,29 +1,32 @@
 import React from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
+
 import CharacterItem from "../components/CharacterItem";
 
+import { EpisodeItemType } from "./Episodes";
+import { CharacterItemType } from "../redux/slices/characterSlice";
 function EpisodePage() {
-  const [episode, setEpisode] = React.useState([]);
-  const [characterData, setCharacterData] = React.useState([]);
-  const [characterUrls, setCharacterUrls] = React.useState([]);
+  const [episode, setEpisode] = React.useState<EpisodeItemType | null>(null);
+  const [characterData, setCharacterData] = React.useState<CharacterItemType[]>(
+    []
+  );
+  const [characterUrls, setCharacterUrls] = React.useState<string[]>([]);
   const { id } = useParams();
   const episodeUrl = `https://rickandmortyapi.com/api/episode/` + id;
 
   React.useEffect(() => {
-    //Fetch character
-    const getCharacter = async () => {
+    //Fetch Episodes
+    const getEpisodes = async () => {
       try {
         const response = await axios.get(episodeUrl);
         setEpisode(response.data);
-        // const test = response.data.characters;
         setCharacterUrls(response.data.characters);
-        // console.log(test, "test");
       } catch (error) {
         console.log(error);
       }
     };
-    getCharacter();
+    getEpisodes();
   }, [episodeUrl]);
 
   React.useEffect(() => {
@@ -41,8 +44,6 @@ function EpisodePage() {
       getCharacterData();
     }
   }, [characterUrls]);
-
-  // console.log(characterData, "char");
 
   return (
     <section className="episodePage">
@@ -65,15 +66,15 @@ function EpisodePage() {
           </button>
         </Link>
         <div className="episodePage--info">
-          <h2>{episode.name}</h2>
+          <h2>{episode?.name}</h2>
           <div className="episodePage--subInfo">
             <div className="episodePage--subInfo--item">
               <p>Episode</p>
-              <span>{episode.episode}</span>
+              <span>{episode?.episode}</span>
             </div>
             <div className="episodePage--subInfo--item">
               <p>Date</p>
-              <span>{episode.air_date}</span>
+              <span>{episode?.air_date}</span>
             </div>
           </div>
         </div>
