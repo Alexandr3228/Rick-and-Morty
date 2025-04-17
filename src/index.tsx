@@ -16,6 +16,7 @@ if (rootElement) {
     <BrowserRouter>
       <Provider store={store}>
         <App />
+        asdasda
       </Provider>
     </BrowserRouter>
   );

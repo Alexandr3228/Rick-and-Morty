@@ -9,7 +9,7 @@ import Episodes from "./pages/Episodes.tsx";
 
 import Header from "./components/Header.tsx";
 import Footer from "./components/Footer.tsx";
-import CharacterPage from "./pages/CharacterPage";
+import CharacterPage from "./pages/CharacterPage.tsx";
 import LocationPage from "./pages/LocationPage.tsx";
 import EpisodePage from "./pages/EpisodePage.tsx";
 

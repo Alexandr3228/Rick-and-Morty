@@ -3,15 +3,16 @@ import React from "react";
 import FilterItem from "../FilterItem/index.tsx";
 import styles from "./Filter.module.scss";
 
-interface FilterOption {
+export interface FilterOption {
   key: string;
   label: string;
+  value?: string;
   options: string[]; // или другой тип, если options может быть не строкой
   onChange: (val: string) => void; // или (val: any), если тип val более гибкий
 }
 
 // Тип для пропсов компонента Filter
-interface FilterProps {
+export interface FilterProps {
   filters: FilterOption[]; // filters это массив объектов FilterOption
 }
 

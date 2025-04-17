@@ -1,7 +1,14 @@
 import React from "react";
 import styles from "./FilterItem.module.scss";
 
-function FilterItem({ label, value, options, onChange }) {
+import { FilterOption } from "../Filter/index.tsx";
+
+const FilterItem: React.FC<FilterOption> = ({
+  label,
+  value = "",
+  options,
+  onChange,
+}) => {
   const [popupIsActive, setPopupIsActive] = React.useState(false);
 
   const handleSelect = (selected) => {
@@ -50,6 +57,7 @@ function FilterItem({ label, value, options, onChange }) {
             {options.map((option) => (
               <li
                 key={option}
+                value={option}
                 onClick={() => handleSelect(option)}
                 className={styles.sort__popup_item}
               >
@@ -61,6 +69,6 @@ function FilterItem({ label, value, options, onChange }) {
       )}
     </div>
   );
-}
+};
 
 export default FilterItem;

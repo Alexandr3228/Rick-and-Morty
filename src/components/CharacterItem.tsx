@@ -1,7 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function CharacterItem({ id, image, name, species }) {
+import { CharacterItemType } from "../redux/slices/characterSlice";
+
+const CharacterItem: React.FC<CharacterItemType> = ({
+  id,
+  image,
+  name,
+  species,
+}) => {
   return (
     <li key={id} className="characters__item">
       <Link key={id} to={`/character/${id}`}>
@@ -13,6 +20,6 @@ function CharacterItem({ id, image, name, species }) {
       </div>
     </li>
   );
-}
+};
 
 export default CharacterItem;

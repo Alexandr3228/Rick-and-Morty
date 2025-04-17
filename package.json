@@ -41,5 +41,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.20",
+    "typescript": "^4.9.5"
+  },
+  "compilerOptions": {
+    "typeRoots": [
+      "./node_modules/",
+      "./src/"
+    ]
   }
 }

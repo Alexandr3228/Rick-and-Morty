@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Search from "../components/Search/index.tsx";
 import Filter from "../components/Filter/index.tsx";
-import CharacterItem from "../components/CharacterItem.jsx";
+import CharacterItem from "../components/CharacterItem.tsx";
 
 import { setCharacters } from "../redux/slices/characterSlice.ts";
 import { fetchHomeFilter } from "../utils/fetchHomeFilter.ts";

@@ -1,28 +1,35 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
+import { CharacterItemType } from "../redux/slices/characterSlice";
 
-export const fetchHomeFilter = async () => {
-  let allSpecies = new Set();
-  let allStatuses = new Set();
-  let allGenders = new Set();
-  let url = "https://rickandmortyapi.com/api/character";
+export const fetchHomeFilter = async (): Promise<
+  [string[], string[], string[]]
+> => {
+  let allSpecies = new Set<string>();
+  let allStatuses = new Set<string>();
+  let allGenders = new Set<string>();
+  let url: string | null = "https://rickandmortyapi.com/api/character";
 
   try {
     while (url) {
-      const response = await axios.get(url);
-      const characters = response.data.results;
+      const response: AxiosResponse = await axios.get(url);
+      const characters: CharacterItemType[] = response.data.results;
       characters.forEach((character) => {
-        if (character.species || character.status || character.gender) {
+        if (character.species) {
           allSpecies.add(
             character.species.charAt(0).toUpperCase() +
               character.species.slice(1).toLowerCase()
           );
+        }
+        if (character.status) {
           allStatuses.add(
-            character.status.charAt(0).toUpperCase() +
-              character.status.slice(1).toLowerCase()
+            character?.status.charAt(0).toUpperCase() +
+              character?.status.slice(1).toLowerCase()
           );
+        }
+        if (character.gender) {
           allGenders.add(
-            character.gender.charAt(0).toUpperCase() +
-              character.gender.slice(1).toLowerCase()
+            character?.gender.charAt(0).toUpperCase() +
+              character?.gender.slice(1).toLowerCase()
           );
         }
       });
@@ -36,6 +43,6 @@ export const fetchHomeFilter = async () => {
     ];
   } catch (error) {
     console.error("Error fetching species:", error);
-    return [];
+    return [[], [], []];
   }
 };

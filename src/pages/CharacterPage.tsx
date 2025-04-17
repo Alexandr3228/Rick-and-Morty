@@ -2,10 +2,15 @@ import React from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 
-function CharacterPage() {
-  const [character, setCharacter] = React.useState([]);
-  const [episodeData, setEpisodeData] = React.useState([]);
-  const [episodeUrls, setEpisodeUrls] = React.useState([]);
+import { CharacterItemType } from "../redux/slices/characterSlice";
+import { EpisodeItemType } from "./Episodes";
+
+const CharacterPage: React.FC = () => {
+  const [character, setCharacter] = React.useState<CharacterItemType | null>(
+    null
+  );
+  const [episodeData, setEpisodeData] = React.useState<EpisodeItemType[]>([]);
+  const [episodeUrls, setEpisodeUrls] = React.useState<string[]>([]);
 
   const { id } = useParams();
   const characterUrl = `https://rickandmortyapi.com/api/character/` + id;
@@ -41,15 +46,13 @@ function CharacterPage() {
   }, [episodeUrls]);
 
   const characterInformationData = {
-    Gender: character.gender,
-    Status: character.status,
-    Specie: character.specie,
-    Origin: character.origin?.name,
-    Type: character.type,
-    Location: character.location?.name,
+    Gender: character?.gender,
+    Status: character?.status,
+    Specie: character?.species,
+    Origin: character?.origin?.name,
+    Type: character?.type,
+    Location: character?.location?.name,
   };
-
-  console.log(characterInformationData);
 
   if (!character) {
     <div className="">...Loading</div>;
@@ -78,10 +81,10 @@ function CharacterPage() {
         <div className="characterPage--content-top">
           <img
             className="characterPage--img"
-            src={character.image}
-            alt={character.name}
+            src={character?.image}
+            alt={character?.name}
           />
-          <h2>{character.name}</h2>
+          <h2>{character?.name}</h2>
         </div>
         <div className="characterPage--info">
           <div className="characterPage--info--block">
@@ -90,9 +93,9 @@ function CharacterPage() {
               {Object.entries(characterInformationData).map(([key, value]) => (
                 <li key={key} className="characterPage--info--item">
                   <h4>{key}</h4>
-                  {key === "Location" && character.location?.url ? (
+                  {key === "Location" && character?.location?.url ? (
                     <Link
-                      to={`/location/${character.location.url
+                      to={`/location/${character?.location?.url
                         .split("/")
                         .pop()}`}
                     >
@@ -157,6 +160,6 @@ function CharacterPage() {
       </div>
     </section>
   );
-}
+};
 
 export default CharacterPage;

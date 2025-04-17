@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 
-import CharacterItem from "../components/CharacterItem";
+import CharacterItem from "../components/CharacterItem.tsx";
 
 import { LocationItemType } from "../pages/Locations";
 import { CharacterItemType } from "../redux/slices/characterSlice";
