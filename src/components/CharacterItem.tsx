@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { CharacterItemType } from "../redux/slices/characterSlice";
+import { CharacterItemType } from "../redux/slices/characters/types";
 
 const CharacterItem: React.FC<CharacterItemType> = ({
   id,

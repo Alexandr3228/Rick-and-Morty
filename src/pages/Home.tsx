@@ -6,9 +6,9 @@ import Search from "../components/Search/index.tsx";
 import Filter from "../components/Filter/index.tsx";
 import CharacterItem from "../components/CharacterItem.tsx";
 
-import { setCharacters } from "../redux/slices/characterSlice.ts";
+import { setCharacters } from "../redux/slices/characters/characterSlice.ts";
 import { fetchHomeFilter } from "../utils/fetchHomeFilter.ts";
-import { RootState } from "../redux/store.ts";
+import { charactersSelector } from "../redux/slices/characters/selectors.ts";
 
 export type FilterType = {
   species: string;
@@ -31,9 +31,7 @@ const Home: React.FC = () => {
 
   const scrollPositionRef = React.useRef(0);
   const dispatch = useDispatch();
-  const characters = useSelector(
-    (state: RootState) => state.character.characters
-  );
+  const characters = useSelector(charactersSelector);
 
   // Состояния для фильтрации
   const [searchValue, setSearchValue] = React.useState("");
@@ -89,7 +87,6 @@ const Home: React.FC = () => {
       try {
         const response = await axios.get(url); // Получаем персонажей
         dispatch(setCharacters(response.data.results)); // Добавляем новых персонажей к уже загруженным
-        console.log(response.data);
         setNextUrl(response.data.info.next); // Устанавливаем URL следующей страницы
       } catch (error) {
         console.error("Error fetching characters:", error);

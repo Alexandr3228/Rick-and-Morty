@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import CharacterItem from "../components/CharacterItem.tsx";
 
 import { LocationItemType } from "../pages/Locations";
-import { CharacterItemType } from "../redux/slices/characterSlice";
+import { CharacterItemType } from "../redux/slices/characters/types";
 
 const LocationPage: React.FC = () => {
   const [location, setLocation] = React.useState<LocationItemType | null>(null);

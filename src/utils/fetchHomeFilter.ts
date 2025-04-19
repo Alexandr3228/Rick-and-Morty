@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { CharacterItemType } from "../redux/slices/characterSlice";
+import { CharacterItemType } from "../redux/slices/characters/characterSlice";
 
 export const fetchHomeFilter = async (): Promise<
   [string[], string[], string[]]

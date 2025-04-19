@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import CharacterItem from "../components/CharacterItem.tsx";
 
 import { EpisodeItemType } from "./Episodes";
-import { CharacterItemType } from "../redux/slices/characterSlice";
+import { CharacterItemType } from "../redux/slices/characters/types";
 function EpisodePage() {
   const [episode, setEpisode] = React.useState<EpisodeItemType | null>(null);
   const [characterData, setCharacterData] = React.useState<CharacterItemType[]>(

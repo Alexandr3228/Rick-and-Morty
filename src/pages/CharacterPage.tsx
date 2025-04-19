@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 
-import { CharacterItemType } from "../redux/slices/characterSlice";
+import { CharacterItemType } from "../redux/slices/characters/types";
 import { EpisodeItemType } from "./Episodes";
 
 const CharacterPage: React.FC = () => {
@@ -12,7 +12,7 @@ const CharacterPage: React.FC = () => {
   const [episodeData, setEpisodeData] = React.useState<EpisodeItemType[]>([]);
   const [episodeUrls, setEpisodeUrls] = React.useState<string[]>([]);
 
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const characterUrl = `https://rickandmortyapi.com/api/character/` + id;
 
   React.useEffect(() => {
@@ -55,7 +55,7 @@ const CharacterPage: React.FC = () => {
   };
 
   if (!character) {
-    <div className="">...Loading</div>;
+    return <div className="">...Loading</div>;
   }
 
   return (
